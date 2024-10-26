@@ -1,0 +1,10 @@
+.cache/clangd/index
+CMakeFiles
+_deps
+CMakeCache.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
+DiscoveryTree
+Makefile
+compile_commands.json
+cmake_install.cmake
