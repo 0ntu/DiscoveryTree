@@ -1,14 +1,14 @@
 cmake_minimum_required (VERSION 3.11)
  
+project(DiscoveryTree LANGUAGES CXX VERSION 1.0.0)
 include(FetchContent)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# pain...
+find_package(CURL REQUIRED)
 include_directories(libraries/bridges/include)
 link_directories(libraries/bridges/lib)
-
-include_directories(libraries/curl/include)
-link_directories(libraries/curl/lib)
 
 FetchContent_Declare(ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
@@ -16,10 +16,10 @@ FetchContent_Declare(ftxui
 )
 FetchContent_MakeAvailable(ftxui)
  
-project(DiscoveryTree LANGUAGES CXX VERSION 1.0.0)
 add_executable(DiscoveryTree src/main.cpp)
 target_link_libraries(DiscoveryTree
   PRIVATE ftxui::screen
   PRIVATE ftxui::dom
   PRIVATE ftxui::component
+  PRIVATE CURL::libcurl
 )
