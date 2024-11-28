@@ -1,8 +1,15 @@
 cmake_minimum_required (VERSION 3.11)
  
 include(FetchContent)
-# set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+include_directories(libraries/bridges/include)
+link_directories(libraries/bridges/lib)
+
+include_directories(libraries/curl/include)
+link_directories(libraries/curl/lib)
+
 FetchContent_Declare(ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
   GIT_TAG v5.0.0
