@@ -9,22 +9,23 @@
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.x86_64-linux.pkgs;
   in {
-    # packages."${system}".default = with import nixpkgs {inherit system;};
-    #   stdenv.mkDerivation {
-    #     name = "DiscoveryTree";
-    #     buildInputs = with pkgs; [cmake curl];
-    #     src = self;
-    #     buildPhase = ''
-    #         cmake .
-    #         make
-    #     '';
-    #     installPhase = ''
-    #       cp DiscoveryTree $out
-    #     '';
-    #   };
+    packages."${system}".default = with import nixpkgs {inherit system;};
+      stdenv.mkDerivation {
+        name = "DiscoveryTree";
+        buildInputs = with pkgs; [cmake curl ftxui];
+        src = self;
+        buildPhase = ''
+            cmake .
+            make
+        '';
+        installPhase = ''
+          mkdir -p $out/bin
+          cp DiscoveryTree $out/bin/DiscoveryTree
+        '';
+      };
 
     devShells."${system}".default = pkgs.mkShell {
-      buildInputs = with pkgs; [cmake curl];
+      buildInputs = with pkgs; [cmake curl ftxui];
     };
   };
 }

@@ -7,14 +7,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # pain...
 find_package(CURL REQUIRED)
+find_package(FTXUI REQUIRED)
 include_directories(libraries/bridges/include)
 link_directories(libraries/bridges/lib)
-
-FetchContent_Declare(ftxui
-  GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-  GIT_TAG v5.0.0
-)
-FetchContent_MakeAvailable(ftxui)
  
 add_executable(DiscoveryTree src/main.cpp)
 target_link_libraries(DiscoveryTree
