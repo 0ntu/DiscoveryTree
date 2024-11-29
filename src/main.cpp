@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 
+#include "Fetcher.h"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
 #include "ftxui/component/screen_interactive.hpp"
@@ -9,6 +10,7 @@
 using namespace ftxui;
 
 int main() {
+
   std::vector<std::string> tab_values{
       "Browse",
       "Suggested",
