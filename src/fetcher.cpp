@@ -18,45 +18,33 @@ vector<Book> fetch(string fileName) {
     ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     while (std::getline(ifs, line) && ifs) {
+        if (ifs.peek() == EOF) break;
         Book book;
         string temp;
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.bookId = std::stoi(temp);
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.title = temp;
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.authors = temp;
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.rating = std::stod(temp);
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.isbn = temp;
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.isbn13 = temp;
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.language = temp;
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.ratings_count = std::stol(temp);
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.text_reviews_count = std::stol(temp);
         std::getline(ifs, temp, ',');
-        std::cerr << temp << " ";
         book.publication_date = temp;
         std::getline(ifs, temp, ',');
-        std::cerr << temp;
-        std::cerr << '\n';
         book.publisher = temp;
         result.push_back(book);
     }
-    Book test = result[256];
     return result;
 }
 } // namespace BooksFetcher
