@@ -1,15 +1,17 @@
 #include <string>
 #include <vector>
 
-#include "Fetcher.h"
+#include "fetcher.h"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/dom/elements.hpp"
 
 using namespace ftxui;
+using BooksFetcher::Book;
 
 int main() {
+  std::vector<Book> books = BooksFetcher::fetch("books.csv");
 
   std::vector<std::string> tab_values{
       "Browse",
