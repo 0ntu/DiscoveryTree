@@ -23,7 +23,7 @@
           ls
           mkdir -p $out/bin
           mkdir -p $out/share/DiscoveryTree
-          cp books.csv $out/share/DiscoveryTree
+          cp books.csv $out/share/discoverytree
           cp DiscoveryTree $out/bin/DiscoveryTree
         '';
       };
