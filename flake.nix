@@ -14,12 +14,16 @@
         name = "DiscoveryTree";
         buildInputs = with pkgs; [cmake curl ftxui];
         src = self;
+        phases = [ "unpackPhase" "buildPhase" "installPhase"];
         buildPhase = ''
             cmake .
             make
         '';
         installPhase = ''
+          ls
           mkdir -p $out/bin
+          mkdir -p $out/share/DiscoveryTree
+          cp books.csv $out/share/DiscoveryTree
           cp DiscoveryTree $out/bin/DiscoveryTree
         '';
       };
