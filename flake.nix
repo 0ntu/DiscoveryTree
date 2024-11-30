@@ -22,7 +22,7 @@
         installPhase = ''
           ls
           mkdir -p $out/bin
-          mkdir -p $out/share/DiscoveryTree
+          mkdir -p $out/share/discoveryTree
           cp books.csv $out/share/discoverytree
           cp DiscoveryTree $out/bin/DiscoveryTree
         '';
