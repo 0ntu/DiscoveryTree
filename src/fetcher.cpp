@@ -9,6 +9,7 @@ using std::vector;
 using std::string;
 
 namespace BooksFetcher {
+//fetch books dataset as a vector given a file
 vector<Book> fetch(string fileName) {
     vector<Book> result;
     std::ifstream ifs(fileName);

@@ -2,10 +2,7 @@
 #include <vector>
 
 #include "fetcher.h"
-#include "ftxui/component/component.hpp"
-#include "ftxui/component/component_base.hpp"
-#include "ftxui/component/screen_interactive.hpp"
-#include "ftxui/dom/elements.hpp"
+#include "ui.h"
 
 using namespace ftxui;
 using BooksFetcher::Book;
@@ -13,7 +10,14 @@ using BooksFetcher::Book;
 int main() {
   std::vector<Book> books = BooksFetcher::fetch("books.csv");
 
-  std::vector<std::string> tab_values{
+  Ui& ui = Ui::getInstance(books);
+
+  auto screen = ScreenInteractive::Fullscreen();
+  screen.Loop(ui.render());
+}
+
+//Old UI for reference
+  /* std::vector<std::string> tab_values{
       "Browse",
       "Suggested",
       "Settings",
@@ -70,5 +74,4 @@ int main() {
   });
 
   auto screen = ScreenInteractive::Fullscreen();
-  screen.Loop(renderer);
-}
+  screen.Loop(renderer); */

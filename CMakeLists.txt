@@ -6,7 +6,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(FTXUI REQUIRED)
  
-add_executable(DiscoveryTree src/main.cpp src/fetcher.cpp)
+add_executable(DiscoveryTree
+  src/main.cpp
+  src/fetcher.cpp
+  src/ui.cpp
+)
 target_link_libraries(DiscoveryTree
   PRIVATE ftxui::screen
   PRIVATE ftxui::dom
