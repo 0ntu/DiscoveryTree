@@ -1,4 +1,5 @@
 .cache/clangd/index
+build
 CMakeFiles
 _deps
 CMakeCache.txt
