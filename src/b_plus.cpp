@@ -5,9 +5,15 @@
 #include "b_plus.h"
 #include <iostream>
 
-//    b_plus::b_plus(vector<Book>& books) {
-//
-//}
+    b_plus::~b_plus() {
+        node* current_node = first_leaf;
+        node* temp_node = nullptr;
+        while(current_node != nullptr){
+            temp_node = current_node->next;
+            delete current_node;
+            current_node = temp_node;
+        }
+    }
 
     void b_plus::createTree(vector<BooksFetcher::Book> books) {
         sortBooks(books);
@@ -15,7 +21,7 @@
 
     }
 
-    // This is a simple bubble sort that compares the ISBN numbers of the books and sorts them in ascending order
+    // This is a simple bubble sort that compares the ISBN13 numbers of the books and sorts them in ascending order
     void b_plus::sortBooks(vector<BooksFetcher::Book>& books) {
         for(int i = 0; i < books.size() - 1; i++){
             bool swapped = false;

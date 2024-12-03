@@ -13,7 +13,7 @@ using namespace std;
             // Our keys are a vector of Book structs defined in fetcher.h
             vector<Book> keys;
             vector<node *> children;
-            node *next;
+            node *next = nullptr;
         };
         node *root;
         node *first_leaf;
@@ -24,13 +24,14 @@ using namespace std;
         // For the sake of easier implementation and creating a denser tree, this b+ tree will assume all
         // leaf nodes are maximally filled
 
+        ~b_plus();
 
         int order;
 
         //Function to create a tree using a vector of books
         void createTree(vector<Book> books);
 
-        //Function to sort a vector of books according to ISBN number
+        //Function to sort a vector of books according to ISBN13 number
         void sortBooks(vector<Book> &books);
 
         //Function to create the leaf nodes
@@ -39,6 +40,6 @@ using namespace std;
         //Function to create internal nodes
         void createInternalNodes(vector<Book> &books);
 
-        //Function to search tree according to ISBN number
+        //Function to search tree according to ISBN13 number
         node *searchTree(int isbn);
     };
