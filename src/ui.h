@@ -4,6 +4,7 @@
 #include "ftxui/component/component_base.hpp"
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/dom/elements.hpp"
+#include "ftxui/dom/table.hpp"
 using namespace ftxui;
 
 class Ui {
@@ -28,5 +29,11 @@ private:
   std::vector<std::string> tab_options;
   Component tab_selection;
   Component exit_button;
+  Component title_container;
+  Component browse_split;
+  int split_size;
+  int selected;
   const std::vector<BooksFetcher::Book> &books;
+
+  static const Element renderBookDetails(BooksFetcher::Book book);
 };
