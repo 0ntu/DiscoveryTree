@@ -23,6 +23,8 @@ using namespace std;
         // Every leaf node will have at least ceil(order/2) keys and at most order-1 keys
         // For the sake of easier implementation and creating a denser tree, this b+ tree will assume all
         // leaf nodes are maximally filled
+
+
         int order;
 
         //Function to create a tree using a vector of books
