@@ -6,7 +6,6 @@
 using BooksFetcher::Book;
 using namespace std;
 
-namespace BPlusTree {
     class b_plus {
     public:
         struct node {
@@ -34,4 +33,3 @@ namespace BPlusTree {
         //Function to search tree according to ISBN number
         node *searchTree(int isbn);
     };
-}
