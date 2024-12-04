@@ -5,6 +5,7 @@
 #include "b_plus.h"
 #include <iostream>
 #include <queue>
+#include <bits/stdc++.h>
 
     // Destructor for the b+ tree
     b_plus::~b_plus() {
@@ -43,21 +44,10 @@
         createInternalNodes(books);
     }
 
-    // This is a simple bubble sort that compares the ISBN13 numbers of the books and sorts them in ascending order
-    void b_plus::sortBooks(vector<BooksFetcher::Book>& books) {
-        for(int i = 0; i < books.size() - 1; i++){
-            bool swapped = false;
-            for(int j = 0; j < books.size() - i - 1; j++){
-                if(stoll(books[j].isbn13) > stoll(books[j+1].isbn13)){
-                    swap(books[j], books[j+1]);
-                    swapped = true;
-                }
-            }
-
-            if(!swapped){
-                break;
-            }
-        }
+    void b_plus::sortBooks(vector<BooksFetcher::Book> &books) {
+        std::sort(books.begin(), books.end(), [](const Book &lhs, const Book &rhs) {
+            return lhs.isbn13 < rhs.isbn13;
+        });
     }
 
     // This takes in a sorted vector of books and creates a linked list of leaf nodes
