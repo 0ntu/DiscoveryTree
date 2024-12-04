@@ -9,11 +9,11 @@ void max_heap::heapify(int i) {
     int left = 2 * i + 1;      
     int right = 2 * i + 2;     
     
-    if (left < size && books[left].isbn > books[largest].isbn)
+    if (left < size && books[left].rating > books[largest].rating)
         largest = left;
 
 
-    if (right < size && books[right].isbn > books[largest].isbn)
+    if (right < size && books[right].rating > books[largest].rating)
         largest = right;
 
     
@@ -48,7 +48,7 @@ void max_heap::insert(BooksFetcher::Book value) {
     books[i] = value;
 
     // Fix the max heap property if it is violated
-    while (i != 0 && books[(i - 1) / 2].isbn < books[i].isbn) {
+    while (i != 0 && books[(i - 1) / 2].rating < books[i].rating) {
         swap(books[i], books[(i - 1) / 2]);
         i = (i - 1) / 2;
     }
@@ -80,7 +80,7 @@ void max_heap::deleteKey(BooksFetcher::Book key) {
     // Find the index of the key
     int index = -1;
     for (int i = 0; i < size; ++i) {
-        if (books[i].isbn == key.isbn) {
+        if (books[i].rating == key.rating) {
             index = i;
             break;
         }
