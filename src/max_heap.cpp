@@ -1,5 +1,8 @@
 #include "max_heap.h"
 
+max_heap::max_heap(const vector<BooksFetcher::Book>& arr) {
+    buildHeap(arr);
+}
 
 void max_heap::heapify(int i) {
     int largest = i;           

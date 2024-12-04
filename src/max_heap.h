@@ -13,6 +13,8 @@ class max_heap {
     int capacity;
 
 public:
+    // Constructor to initialize the heap given a Book array
+    max_heap(const vector<BooksFetcher::Book>& arr);
 
     // Constructor to initialize the heap with a given capacity
     max_heap(int capacity);
