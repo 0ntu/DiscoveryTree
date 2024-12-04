@@ -16,7 +16,7 @@ vector<Book> fetch(string fileName) {
     string line;
     
     if (!ifs) {
-        throw std::runtime_error("Dataset could not be opened");
+        throw std::runtime_error("Dataset could not be opened:\n./DiscoveryTree <dataset_path>");
     }
 
     //1st line is not valid data
