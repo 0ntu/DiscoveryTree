@@ -14,6 +14,10 @@ vector<Book> fetch(string fileName) {
     vector<Book> result;
     std::ifstream ifs(fileName);
     string line;
+    
+    if (!ifs) {
+        throw std::runtime_error("Dataset could not be opened");
+    }
 
     //1st line is not valid data
     ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
