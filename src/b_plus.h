@@ -9,7 +9,7 @@ using namespace std;
     class b_plus {
     public:
         struct node {
-            bool isLeaf;
+            bool isLeaf = false;
             // Our keys are a vector of Book structs defined in fetcher.h
             vector<Book> keys;
             vector<node *> children;
@@ -17,6 +17,7 @@ using namespace std;
         };
         node *root;
         node *first_leaf;
+        int num_nodes = 0;
 
         // The order defines the maximum number of children each internal node can have
         // Each internal node has at least ceil(order/2) children and at most order-1 keys
