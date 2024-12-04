@@ -50,8 +50,8 @@ using namespace std;
         // Function to delete the tree using postorder traversal
         void deleteTree(node* start_node, int& num_deleted);
 
-        // Function to search tree according to ISBN13 number
-        node *searchTree(int isbn);
+        // Function to search tree according to indexed number
+        Book searchTree(int index);
 
         // Function to traverse the tree by level
         vector<vector<node*>> levelOrderTraverse();
