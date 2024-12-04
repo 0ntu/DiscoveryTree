@@ -26,6 +26,7 @@ using namespace std;
         // leaf nodes are maximally filled
         int order;
 
+        // Destructor function
         ~b_plus();
 
         // Function to create a tree using a vector of books
@@ -47,7 +48,7 @@ using namespace std;
         Book getSmallestBook(node* start_node);
 
         // Function to delete the tree using postorder traversal
-        void deleteTree(node* start_node, int& num_deleted);
+        void deleteTree(node* start_node);
 
         // Function to search tree according to indexed number
         node* searchTree(int index);
