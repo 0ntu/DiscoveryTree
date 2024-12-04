@@ -3,9 +3,8 @@
 //
 
 #include "b_plus.h"
-#include <iostream>
 #include <queue>
-#include <bits/stdc++.h>
+#include <algorithm>
 
     // Destructor for the b+ tree
     b_plus::~b_plus() {
