@@ -8,11 +8,11 @@ using BooksFetcher::Book;
 using namespace std;
 
 class max_heap {
-    vector<BooksFetcher::Book> books;  
     int size;
     int capacity;
 
 public:
+    vector<BooksFetcher::Book> books;  
     // Constructor to initialize the heap given a Book array
     max_heap(const vector<BooksFetcher::Book>& arr);
 
