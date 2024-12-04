@@ -5,17 +5,23 @@
 #include "b_plus.h"
 #include <iostream>
 
-//    b_plus::b_plus(vector<Book>& books) {
-//
-//}
+    b_plus::~b_plus() {
+        node* current_node = first_leaf;
+        node* temp_node = nullptr;
+        while(current_node != nullptr){
+            temp_node = current_node->next;
+            delete current_node;
+            current_node = temp_node;
+        }
+    }
 
     void b_plus::createTree(vector<BooksFetcher::Book> books) {
         sortBooks(books);
         createLeafs(books);
-
+        createInternalNodes(books);
     }
 
-    // This is a simple bubble sort that compares the ISBN numbers of the books and sorts them in ascending order
+    // This is a simple bubble sort that compares the ISBN13 numbers of the books and sorts them in ascending order
     void b_plus::sortBooks(vector<BooksFetcher::Book>& books) {
         for(int i = 0; i < books.size() - 1; i++){
             bool swapped = false;
@@ -45,7 +51,7 @@
             start->keys.push_back(books[i]);
         }
 
-//        books_added += order-1;
+        num_nodes += 1;
 
         node* previous_node = first_leaf;
 
@@ -54,6 +60,7 @@
             node* next_node = new node;
             previous_node->next = next_node;
             next_node->isLeaf = true;
+            num_nodes += 1;
 
             // If we are at the last full node, we check if there are still more books at the end of the vector
             // If so, we split the remaining books into two smaller nodes
@@ -63,18 +70,17 @@
                 // We insert the first half of the books into the first node
                 for(int j = 0; j < remaining_books / 2; j++){
                     next_node->keys.push_back(books[j + (i * (order - 1))]);
-//                    books_added += 1;
                 }
 
                 // We initialize the second node
                 node* final_node = new node;
                 next_node->next = final_node;
                 final_node->isLeaf = true;
+                num_nodes += 1;
 
                 // We insert the other half of the remaining books into the second node
                 for(int k = 0; k < remaining_books - (remaining_books / 2); k++){
                     final_node->keys.push_back(books[k + (remaining_books / 2) + (i * (order - 1))]);
-//                    books_added += 1;
                 }
             }
 
@@ -92,7 +98,43 @@
     }
 
     void b_plus::createInternalNodes(vector<BooksFetcher::Book>& books) {
-
+        vector<node*> first_layer;
+        node* current_node = first_leaf;
+        for(int i = 0; i < num_nodes / order; i++){
+            node* new_internal = new node;
+            first_layer.push_back(new_internal);
+            if(i == (num_nodes / order) - 1 && num_nodes % order != 0){
+                int remaining_nodes = order + (num_nodes % order);
+                for(int j = 0; j < remaining_nodes / 2; j++){
+                    if(j != (remaining_nodes / 2) - 1){
+                        new_internal->keys.push_back(current_node->next->keys[0]);
+                    }
+                    new_internal->children.push_back(current_node);
+                    current_node = current_node->next;
+                }
+                node* final_internal = new node;
+                first_layer.push_back(final_internal);
+                for(int k = 0; k < remaining_nodes - (remaining_nodes / 2); k++){
+                    if(k != remaining_nodes - (remaining_nodes / 2) - 1){
+                        final_internal->keys.push_back(current_node->next->keys[0]);
+                    }
+                    final_internal->children.push_back(current_node);
+                    current_node = current_node->next;
+                }
+            }
+            else{
+                for(int j = 0; j < order; j++){
+                    if(j != order - 1){
+                        new_internal->keys.push_back(current_node->next->keys[0]);
+                    }
+                    new_internal->children.push_back(current_node);
+                    current_node = current_node->next;
+                }
+            }
+        }
+        if(num_nodes / order == 1){
+            root = first_layer[0];
+        }
     }
 
     b_plus::node* b_plus::searchTree(int isbn) {
