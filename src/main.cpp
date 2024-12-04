@@ -3,6 +3,8 @@
 
 #include "fetcher.h"
 #include "ui.h"
+#include "max_heap.h"
+#include "b_plus.h"
 
 using namespace ftxui;
 using BooksFetcher::Book;
@@ -18,6 +20,13 @@ int main(int argc, char** argv) {
     books = BooksFetcher::fetch("books.csv");
   }
 
-  Ui& ui = Ui::getInstance(books);
+  //create data structures
+  max_heap heap = max_heap(books);
+  b_plus bptree = b_plus();
+  bptree.order = 3;
+  bptree.createTree(books);
+
+  //run ui
+  Ui& ui = Ui::getInstance(books, heap, bptree);
   ui.loop();
 }

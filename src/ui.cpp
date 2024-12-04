@@ -6,6 +6,11 @@ using std::vector;
 
 void Ui::loop() { screen.Loop(render()); }
 
+// FTXUI does not have a scrollable table
+// Create Table with Vertical Container of Book Components
+// https://github.com/ArthurSonzogni/FTXUI/discussions/757
+//
+// BookLine is an entry in the scrollable table
 Component BookLine(Book book) {
   class Impl : public ComponentBase {
     Element Render() final {
@@ -32,14 +37,15 @@ Component BookLine(Book book) {
   return instance;
 }
 
-Ui &Ui::getInstance(const vector<Book> &books) {
-  static Ui instance(books);
+// Create and get UI singleton
+Ui &Ui::getInstance(const vector<Book> &books, max_heap &heap, b_plus &bptree) {
+  static Ui instance(books, heap, bptree);
   return instance;
 }
 
-Ui::Ui(const vector<Book> &books)
-    : books(books), screen(ScreenInteractive::Fullscreen()),
-      heap(max_heap(books)) {
+Ui::Ui(const vector<Book> &books, max_heap &heap, b_plus &bptree)
+    : books(books), screen(ScreenInteractive::Fullscreen()), heap(heap),
+      bptree(bptree) {
 
   buildTabline();
   buildBrowseMenu();
@@ -89,6 +95,7 @@ Element Ui::renderPrimary() {
   } else if (tab_index == 2) {
     return bookmarks_split->Render() | border;
   } else if (tab_index == 3) {
+    buildCoreSuggestedMenu();
     return vbox(paragraph("Data structure to use for Suggested") | center,
                 settings_ds_menu->Render() | center) |
            borderStyled(ROUNDED) | center;
@@ -158,7 +165,13 @@ void Ui::buildSuggestedMenu() {
 }
 
 void Ui::buildCoreSuggestedMenu() {
-  current_suggested_book = heap.top();
+  // use heap to suggest
+  if (settings_selected == 0) {
+    current_suggested_book = heap.top();
+  } else {
+    // use bptree to suggest
+    current_suggested_book = bptree.getSmallestBook(bptree.root);
+  }
   book_display =
       vbox(
           filler(), text(current_suggested_book.title) | center,
@@ -177,12 +190,10 @@ void Ui::buildCoreSuggestedMenu() {
       center | borderStyled(DASHED) | size(HEIGHT, GREATER_THAN, 40) |
       size(WIDTH, GREATER_THAN, 60);
 
-  suggested_split = ResizableSplitLeft(
-      Renderer([&] {
-        return vbox(book_display | center | flex,
-                    suggested_buttons->Render() | center | flex);
-      }),
-      Renderer([&] { return vbox(); }), &split_size_suggested);
+  suggested_split = Renderer([&] {
+    return vbox(book_display | center | flex,
+                suggested_buttons->Render() | center | flex);
+  });
 }
 
 void Ui::buildBookmarksMenu() {
@@ -217,6 +228,12 @@ void Ui::buildSettingsMenu() {
 void Ui::buildAboutMenu() {
   aboutElement =
       vbox({
+          text("|| Discovery Tree ||") | bold | center,
+          text("A fast and free book finder for the 90s!") | center,
+          text("Search through a catalog of over 10,000 books") | center,
+          separatorEmpty(),
+          separatorEmpty(),
+          separatorEmpty(),
           text("Made with ♥ by:") | bold | center,
           text("Dia Fallon (B+ Tree Implementation)") | center,
           text("Cainan Medeiros (Heap Tree Implementation)") | center,

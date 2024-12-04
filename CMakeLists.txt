@@ -11,6 +11,7 @@ add_executable(DiscoveryTree
   src/fetcher.cpp
   src/ui.cpp
   src/max_heap.cpp
+  src/b_plus.cpp
 )
 target_link_libraries(DiscoveryTree
   PRIVATE ftxui::screen
