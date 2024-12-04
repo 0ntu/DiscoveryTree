@@ -52,4 +52,10 @@ using namespace std;
 
         // Function to search tree according to ISBN13 number
         node *searchTree(int isbn);
+
+        // Function to traverse the tree by level
+        vector<vector<node*>> levelOrderTraverse();
+
+        // Function to recursively traverse the tree by level order
+        void recursiveLevelOrder(node* root_node, vector<vector<node*>>& traversal, int level_num);
     };

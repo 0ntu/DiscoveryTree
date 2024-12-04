@@ -4,6 +4,7 @@
 
 #include "b_plus.h"
 #include <iostream>
+#include <queue>
 
     // Destructor for the b+ tree
     b_plus::~b_plus() {
@@ -285,6 +286,30 @@
 
     b_plus::node* b_plus::searchTree(int isbn) {
 
+    }
+
+    vector<vector<b_plus::node*>> b_plus::levelOrderTraverse() {
+        vector<vector<node*>> traversal;
+        vector<node*> first_level;
+        traversal.push_back(first_level);
+        recursiveLevelOrder(root, traversal, 0);
+        return traversal;
+    }
+
+    void b_plus::recursiveLevelOrder(b_plus::node* root_node, vector<vector<node*>>& traversal, int level_num) {
+        if(traversal.size() - 1 < level_num){
+            vector<node*> curr_level;
+            traversal.push_back(curr_level);
+        }
+        if(root_node->isLeaf){
+            traversal[level_num].push_back(root_node);
+            return;
+        }
+        traversal[level_num].push_back(root_node);
+        for(int i = 0; i < root_node->children.size(); i++){
+            recursiveLevelOrder(root_node->children[i], traversal, level_num + 1);
+        }
+        traversal[level_num + 1].push_back(nullptr);
     }
 
 //#include <string>
