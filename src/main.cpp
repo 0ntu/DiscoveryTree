@@ -11,7 +11,5 @@ int main() {
   std::vector<Book> books = BooksFetcher::fetch("books.csv");
 
   Ui& ui = Ui::getInstance(books);
-
-  auto screen = ScreenInteractive::Fullscreen();
-  screen.Loop(ui.render());
+  ui.loop();
 }
