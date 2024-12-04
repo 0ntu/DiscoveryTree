@@ -22,8 +22,17 @@ private:
 
   Element buildInterface();
   
+  //Render component to element
   Element renderPrimary();
   Element renderTabline();
+
+  //Handles Layout for each part of the UI
+  void buildTabline();
+  void buildBrowseMenu();
+  void buildSuggestedMenu();
+  void buildBookmarksMenu();
+  void buildSettingsMenu();
+  void buildAboutMenu();
 
   ScreenInteractive screen;
   int tab_index = 0;
@@ -32,14 +41,21 @@ private:
   Component tab_selection;
   Component exit_button;
   Component title_container;
+  Component saved_container;
   Component browse_split;
   Component suggested_split;
+  Component bookmarks_split;
   Component settings_ds_menu;
+  Component suggested_buttons;
   Element book_display;
+  Element aboutElement;
   int split_size_browse;
   int split_size_suggested;
-  int selected;
+  int split_size_bookmarks;
+  int browse_selected;
   int settings_selected;
+  int bookmarks_selected;
+  std::vector<BooksFetcher::Book> saved_books;
   const std::vector<BooksFetcher::Book> &books;
 
   static const Element renderBookDetails(BooksFetcher::Book book);
