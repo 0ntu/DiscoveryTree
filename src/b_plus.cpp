@@ -3,30 +3,26 @@
 //
 
 #include "b_plus.h"
-#include <iostream>
+#include <queue>
+#include <algorithm>
 
     // Destructor for the b+ tree
     b_plus::~b_plus() {
-        int num_deleted = 0;
-
         // Calls the deleteTree function to recursively delete the nodes
-        deleteTree(root, num_deleted);
-        cout << num_deleted << endl;
+        deleteTree(root);
     }
 
     // Function to recursively delete the nodes in the tree with postorder traversal
-    void b_plus::deleteTree(b_plus::node *start_node, int& num_deleted) {
+    void b_plus::deleteTree(b_plus::node *start_node) {
         // If our current node is a leaf node, delete it and return
         if(start_node->isLeaf){
             delete start_node;
-            num_deleted += 1;
             return;
         }
         // If our current node is not a leaf node, visit all of its children first and delete them, then delete this node
         for(int i = 0; i < start_node->children.size(); i++){
-            deleteTree(start_node->children[i], num_deleted);
+            deleteTree(start_node->children[i]);
         }
-        num_deleted += 1;
         delete start_node;
     }
 
@@ -42,27 +38,16 @@
         createInternalNodes(books);
     }
 
-    // This is a simple bubble sort that compares the ISBN13 numbers of the books and sorts them in ascending order
-    void b_plus::sortBooks(vector<BooksFetcher::Book>& books) {
-        for(int i = 0; i < books.size() - 1; i++){
-            bool swapped = false;
-            for(int j = 0; j < books.size() - i - 1; j++){
-                if(stoll(books[j].isbn13) > stoll(books[j+1].isbn13)){
-                    swap(books[j], books[j+1]);
-                    swapped = true;
-                }
-            }
-
-            if(!swapped){
-                break;
-            }
-        }
+    // Function to sort a vector of books in ascending order
+    void b_plus::sortBooks(vector<BooksFetcher::Book> &books) {
+        std::sort(books.begin(), books.end(), [](const Book &lhs, const Book &rhs) {
+            return lhs.isbn13 < rhs.isbn13;
+        });
     }
 
     // This takes in a sorted vector of books and creates a linked list of leaf nodes
     // Each leaf node contains at least ceil(order/2) values and at most order-1 values
     void b_plus::createLeafs(vector<BooksFetcher::Book>& books) {
-//        int books_added = 0;
         // This initializes our first node in the linked list
         node* start = new node;
         start->isLeaf = true;
@@ -109,13 +94,11 @@
             else{
                 for(int j = 0; j < order - 1; j++){
                     next_node->keys.push_back(books[j + (i * (order - 1))]);
-//                    books_added += 1;
                 }
             }
 
             previous_node = next_node;
         }
-//        std::cout << books_added << std::endl;
     }
 
     // This function creates the internal nodes of the b+ tree after the leaf nodes have been initialized
@@ -283,33 +266,63 @@
         return start_node->keys[0];
     }
 
-    b_plus::node* b_plus::searchTree(int isbn) {
+    // Function to search through the tree for an indexed book, returning the node that book is located in
+    b_plus::node* b_plus::searchTree(int index) {
+        int current_index = 0;
+        node* current_node = first_leaf;
 
+        while(current_index != index){
+            for(int i = 0; i < current_node->keys.size(); i++){
+
+                if(current_index == index){
+                    return current_node;
+                }
+
+                current_index += 1;
+            }
+        }
     }
 
-//#include <string>
-//#include <vector>
-//#include <iostream>
-//
-//#include "fetcher.h"
-////#include "ui.h"
-//#include "b_plus.h"
-//
-////using namespace ftxui;
-//using BooksFetcher::Book;
-//
-//int main() {
-//    std::vector<Book> books = BooksFetcher::fetch("books.csv");
-//    std::vector<Book> small_books;
-//    for(int i = 0; i < 6; i++){
-//        small_books.push_back(books[i]);
-//    }
-//    b_plus tree;
-//    tree.order = 3;
-//    tree.createTree(small_books);
-//    cout << tree.root->keys[0].title << endl;
-////  Ui& ui = Ui::getInstance(books);
-////
-////  auto screen = ScreenInteractive::Fullscreen();
-////  screen.Loop(ui.render());
-//}
+    // Function to return the next node in order after a given node
+    b_plus::node *b_plus::getNextNode(b_plus::node *start_node) {
+        return start_node->next;
+    }
+
+    // Function to traverse through the tree by level
+    // Returns a vector of node vectors representing the nodes in each level
+    vector<vector<b_plus::node*>> b_plus::levelOrderTraverse() {
+        vector<vector<node*>> traversal;
+        vector<node*> first_level;
+        traversal.push_back(first_level);
+
+        // Calls recursiveLevelOrder to recursively traverse through the tree, starting at the root node
+        recursiveLevelOrder(root, traversal, 0);
+        return traversal;
+    }
+
+    // Function to recursively traverse through the tree by level order
+    void b_plus::recursiveLevelOrder(b_plus::node* root_node, vector<vector<node*>>& traversal, int level_num) {
+        // If this is the first node in the current level, initialize a new vector of nodes to the traversal vector
+        if(traversal.size() - 1 < level_num){
+            vector<node*> curr_level;
+            traversal.push_back(curr_level);
+        }
+
+        // If the current node is a leaf node, add it to the current layer and return
+        if(root_node->isLeaf){
+            traversal[level_num].push_back(root_node);
+            return;
+        }
+
+        // If the current node is not a leaf node, add it to the current layer and recursively
+        // traverse the child nodes in order
+        traversal[level_num].push_back(root_node);
+        for(int i = 0; i < root_node->children.size(); i++){
+            recursiveLevelOrder(root_node->children[i], traversal, level_num + 1);
+        }
+
+        // To separate groups of child nodes, a nullptr is inserted into the vector of nodes once all the child nodes
+        // have been added to the vector
+        traversal[level_num + 1].push_back(nullptr);
+    }
+

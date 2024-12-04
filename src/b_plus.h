@@ -18,22 +18,22 @@ using namespace std;
         node *root;
         node *first_leaf;
         int num_nodes = 0;
-        int order;
-
 
         // The order defines the maximum number of children each internal node can have
         // Each internal node has at least ceil(order/2) children and at most order-1 keys
         // Every leaf node will have at least ceil(order/2) keys and at most order-1 keys
         // For the sake of easier implementation and creating a denser tree, this b+ tree will assume all
         // leaf nodes are maximally filled
+        int order;
 
+        // Destructor function
         ~b_plus();
 
         // Function to create a tree using a vector of books
         void createTree(vector<Book> books);
 
         // Function to sort a vector of books according to ISBN13 number
-        void sortBooks(vector<Book> &books);
+        void sortBooks(vector<BooksFetcher::Book> &books);
 
         // Function to create the leaf nodes
         void createLeafs(vector<Book> &books);
@@ -48,8 +48,17 @@ using namespace std;
         Book getSmallestBook(node* start_node);
 
         // Function to delete the tree using postorder traversal
-        void deleteTree(node* start_node, int& num_deleted);
+        void deleteTree(node* start_node);
 
-        // Function to search tree according to ISBN13 number
-        node *searchTree(int isbn);
+        // Function to search tree according to indexed number
+        node* searchTree(int index);
+
+        // Function to get the next node in the leaves after a given book
+        node* getNextNode(node* start_node);
+
+        // Function to traverse the tree by level
+        vector<vector<node*>> levelOrderTraverse();
+
+        // Function to recursively traverse the tree by level order
+        void recursiveLevelOrder(node* root_node, vector<vector<node*>>& traversal, int level_num);
     };
