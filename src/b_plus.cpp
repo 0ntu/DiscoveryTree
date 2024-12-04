@@ -6,13 +6,22 @@
 #include <iostream>
 
     b_plus::~b_plus() {
-        node* current_node = first_leaf;
-        node* temp_node = nullptr;
-        while(current_node != nullptr){
-            temp_node = current_node->next;
-            delete current_node;
-            current_node = temp_node;
+        int num_deleted = 0;
+        deleteTree(root, num_deleted);
+        cout << num_deleted << endl;
+    }
+
+    void b_plus::deleteTree(b_plus::node *start_node, int& num_deleted) {
+        if(start_node->isLeaf){
+            delete start_node;
+            num_deleted += 1;
+            return;
         }
+        for(int i = 0; i < start_node->children.size(); i++){
+            deleteTree(start_node->children[i], num_deleted);
+        }
+        num_deleted += 1;
+        delete start_node;
     }
 
     void b_plus::createTree(vector<BooksFetcher::Book> books) {

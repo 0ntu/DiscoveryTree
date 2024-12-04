@@ -45,6 +45,8 @@ using namespace std;
 
         Book getSmallestBook(node* start_node);
 
+        void deleteTree(node* start_node, int& num_deleted);
+
         //Function to search tree according to ISBN13 number
         node *searchTree(int isbn);
     };
