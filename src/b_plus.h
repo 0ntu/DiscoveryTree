@@ -51,7 +51,10 @@ using namespace std;
         void deleteTree(node* start_node, int& num_deleted);
 
         // Function to search tree according to indexed number
-        Book searchTree(int index);
+        node* searchTree(int index);
+
+        // Function to get the next node in the leaves after a given book
+        node* getNextNode(node* start_node);
 
         // Function to traverse the tree by level
         vector<vector<node*>> levelOrderTraverse();

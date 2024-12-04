@@ -284,17 +284,21 @@
         return start_node->keys[0];
     }
 
-    Book b_plus::searchTree(int index) {
+    b_plus::node* b_plus::searchTree(int index) {
         int current_index = 0;
         node* current_node = first_leaf;
         while(current_index != index){
             for(int i = 0; i < current_node->keys.size(); i++){
                 if(current_index == index){
-                    return current_node->keys[i];
+                    return current_node;
                 }
                 current_index += 1;
             }
         }
+    }
+
+    b_plus::node *b_plus::getNextNode(b_plus::node *start_node) {
+        return start_node->next;
     }
 
     vector<vector<b_plus::node*>> b_plus::levelOrderTraverse() {
