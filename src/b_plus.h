@@ -41,6 +41,10 @@ using namespace std;
         //Function to create internal nodes
         void createInternalNodes(vector<Book> &books);
 
+        void fillInternalNodes(vector<node*>& start_layer);
+
+        Book getSmallestBook(node* start_node);
+
         //Function to search tree according to ISBN13 number
         node *searchTree(int isbn);
     };

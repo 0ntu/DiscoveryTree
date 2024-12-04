@@ -100,43 +100,138 @@
     void b_plus::createInternalNodes(vector<BooksFetcher::Book>& books) {
         vector<node*> first_layer;
         node* current_node = first_leaf;
-        for(int i = 0; i < num_nodes / order; i++){
+        if(num_nodes / order == 0){
             node* new_internal = new node;
-            first_layer.push_back(new_internal);
-            if(i == (num_nodes / order) - 1 && num_nodes % order != 0){
-                int remaining_nodes = order + (num_nodes % order);
-                for(int j = 0; j < remaining_nodes / 2; j++){
-                    if(j != (remaining_nodes / 2) - 1){
-                        new_internal->keys.push_back(current_node->next->keys[0]);
-                    }
-                    new_internal->children.push_back(current_node);
-                    current_node = current_node->next;
+            for(int i = 0; i < num_nodes; i++){
+                if(i != num_nodes - 1){
+                    new_internal->keys.push_back(current_node->next->keys[0]);
                 }
-                node* final_internal = new node;
-                first_layer.push_back(final_internal);
-                for(int k = 0; k < remaining_nodes - (remaining_nodes / 2); k++){
-                    if(k != remaining_nodes - (remaining_nodes / 2) - 1){
-                        final_internal->keys.push_back(current_node->next->keys[0]);
+                new_internal->children.push_back(current_node);
+                current_node = current_node->next;
+            }
+            root = new_internal;
+        }
+        else{
+            for(int i = 0; i < num_nodes / order; i++){
+                node* new_internal = new node;
+                first_layer.push_back(new_internal);
+                if(i == (num_nodes / order) - 1 && num_nodes % order != 0){
+                    int remaining_nodes = order + (num_nodes % order);
+                    for(int j = 0; j < remaining_nodes / 2; j++){
+                        if(j != (remaining_nodes / 2) - 1){
+                            new_internal->keys.push_back(current_node->next->keys[0]);
+                        }
+                        new_internal->children.push_back(current_node);
+                        current_node = current_node->next;
                     }
-                    final_internal->children.push_back(current_node);
-                    current_node = current_node->next;
+                    node* final_internal = new node;
+                    first_layer.push_back(final_internal);
+                    for(int k = 0; k < remaining_nodes - (remaining_nodes / 2); k++){
+                        if(k != remaining_nodes - (remaining_nodes / 2) - 1){
+                            final_internal->keys.push_back(current_node->next->keys[0]);
+                        }
+                        final_internal->children.push_back(current_node);
+                        current_node = current_node->next;
+                    }
+                }
+                else{
+                    for(int j = 0; j < order; j++){
+                        if(j != order - 1){
+                            new_internal->keys.push_back(current_node->next->keys[0]);
+                        }
+                        new_internal->children.push_back(current_node);
+                        current_node = current_node->next;
+                    }
+                }
+            }
+            fillInternalNodes(first_layer);
+        }
+    }
+
+    void b_plus::fillInternalNodes(vector<b_plus::node *>& start_layer) {
+        vector<node*> current_layer;
+        while(start_layer.size() != 1){
+            if(start_layer.size() / order == 0){
+                node* new_internal = new node;
+                current_layer.push_back(new_internal);
+                for(int i = 0; i < start_layer.size(); i++){
+                    if(i != start_layer.size() - 1){
+                        new_internal->keys.push_back(getSmallestBook(start_layer[i + 1]));
+                    }
+                    new_internal->children.push_back(start_layer[i]);
                 }
             }
             else{
-                for(int j = 0; j < order; j++){
-                    if(j != order - 1){
-                        new_internal->keys.push_back(current_node->next->keys[0]);
+                for(int i = 0; i < start_layer.size() / order; i++){
+                    node* new_internal = new node;
+                    current_layer.push_back(new_internal);
+                    if(i == (start_layer.size() / order) - 1 && start_layer.size() % order != 0){
+                        int remaining_nodes = order + (start_layer.size() % order);
+                        for(int j = 0; j < remaining_nodes / 2; j++){
+                            if(j != (remaining_nodes / 2) - 1){
+                                new_internal->keys.push_back(getSmallestBook(start_layer[(i * order) + j + 1]));
+                            }
+                            new_internal->children.push_back(start_layer[(i * order) + j]);
+                        }
+                        node* final_internal = new node;
+                        current_layer.push_back(final_internal);
+                        for(int k = 0; k < remaining_nodes - (remaining_nodes / 2); k++){
+                            if(k != remaining_nodes - (remaining_nodes / 2) - 1){
+                                final_internal->keys.push_back(getSmallestBook(start_layer[(i * order) + k + (remaining_nodes / 2) + 1]));
+                            }
+                            final_internal->children.push_back(start_layer[(i * order) + k + (remaining_nodes / 2)]);
+                        }
                     }
-                    new_internal->children.push_back(current_node);
-                    current_node = current_node->next;
+                    else{
+                        for(int j = 0; j < order; j++){
+                            if(j != order - 1){
+                                new_internal->keys.push_back(getSmallestBook(start_layer[(i * order) + j + 1]));
+                            }
+                            new_internal->children.push_back(start_layer[(i * order) + j]);
+                        }
+                    }
                 }
             }
+            start_layer = current_layer;
+            current_layer.clear();
         }
-        if(num_nodes / order == 1){
-            root = first_layer[0];
+        root = start_layer[0];
+    }
+
+    Book b_plus::getSmallestBook(b_plus::node *start_node) {
+        while(!start_node->isLeaf){
+            start_node = start_node->children[0];
         }
+        return start_node->keys[0];
     }
 
     b_plus::node* b_plus::searchTree(int isbn) {
 
     }
+
+//#include <string>
+//#include <vector>
+//#include <iostream>
+//
+//#include "fetcher.h"
+////#include "ui.h"
+//#include "b_plus.h"
+//
+////using namespace ftxui;
+//using BooksFetcher::Book;
+//
+//int main() {
+//    std::vector<Book> books = BooksFetcher::fetch("books.csv");
+//    std::vector<Book> small_books;
+//    for(int i = 0; i < 6; i++){
+//        small_books.push_back(books[i]);
+//    }
+//    b_plus tree;
+//    tree.order = 3;
+//    tree.createTree(small_books);
+//    cout << tree.root->keys[0].title << endl;
+////  Ui& ui = Ui::getInstance(books);
+////
+////  auto screen = ScreenInteractive::Fullscreen();
+////  screen.Loop(ui.render());
+//}
