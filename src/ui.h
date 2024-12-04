@@ -4,6 +4,7 @@
 #include "ftxui/component/component_base.hpp"
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/dom/elements.hpp"
+#include "max_heap.h"
 using namespace ftxui;
 
 class Ui {
@@ -31,6 +32,7 @@ private:
   void buildBrowseMenu();
   void buildSuggestedMenu();
   void buildBookmarksMenu();
+  void buildCoreBookmarksMenu();
   void buildSettingsMenu();
   void buildAboutMenu();
 
@@ -55,8 +57,11 @@ private:
   int browse_selected;
   int settings_selected;
   int bookmarks_selected;
+  Book current_suggested_book;
   std::vector<BooksFetcher::Book> saved_books;
   const std::vector<BooksFetcher::Book> &books;
+
+  max_heap heap;
 
   static const Element renderBookDetails(BooksFetcher::Book book);
 };

@@ -38,7 +38,9 @@ Ui &Ui::getInstance(const vector<Book> &books) {
 }
 
 Ui::Ui(const vector<Book> &books)
-    : books(books), screen(ScreenInteractive::Fullscreen()) {
+    : books(books), screen(ScreenInteractive::Fullscreen()),
+      heap(max_heap(books)) {
+
   buildTabline();
   buildBrowseMenu();
   buildSuggestedMenu();
@@ -117,8 +119,11 @@ void Ui::buildBrowseMenu() {
   }
   browse_split = ResizableSplitLeft(
       Renderer([&] {
-        return vbox(text("Book List") | bold | center, separator(),
-                    title_container->Render() | vscroll_indicator | frame);
+        return vbox(
+            hbox(text(std::to_string(browse_selected)) | dim, text("/") | dim,
+                 text(std::to_string(books.size())) | dim,
+                 text("Book List") | bold | center | flex),
+            separator(), title_container->Render() | vscroll_indicator | frame);
       }),
       Renderer([&] {
         return vbox(text("Details") | bold | center, separatorEmpty(),
@@ -129,22 +134,48 @@ void Ui::buildBrowseMenu() {
 
 void Ui::buildSuggestedMenu() {
   suggested_buttons = Container::Vertical({
-    // Button("Bookmark", [&] {}, ButtonOption::Animated(Color::Blue)),
-    // Button("Don't Bookmark", [&] {}, ButtonOption::Animated(Color::GrayDark)),
-    Button("Bookmark", [&] {}, ButtonOption::Simple()),
-    Button("Don't Bookmark", [&] {}, ButtonOption::Simple()),
+      Button(
+          "Bookmark",
+          [&] {
+            Book popped = heap.pop();
+            saved_books.push_back(popped);
+            buildCoreSuggestedMenu();
+            saved_container->Add(BookLine(popped));
+          },
+          ButtonOption::Simple()),
+      Button(
+          "Don't Bookmark",
+          [&] {
+            heap.pop();
+            buildCoreSuggestedMenu();
+          },
+          ButtonOption::Simple()),
   });
 
   split_size_suggested = 180;
+
+  buildCoreSuggestedMenu();
+}
+
+void Ui::buildCoreSuggestedMenu() {
+  current_suggested_book = heap.top();
   book_display =
-      vbox(filler(), text(books[10].title) | center, separatorLight(),
-           hbox(text("By: "), text(books[10].authors)) | center,
-           separatorEmpty(),
-           hbox(text(std::to_string(books[10].rating)), text("/5 rating")) |
-               center,
-           hbox(text("Published: "), text(books[10].publisher)) | center,
-           hbox(text("ISBN: "), text(books[10].isbn) | underlined) | center) |
-      center | borderStyled(DASHED) | size(HEIGHT, GREATER_THAN, 40);
+      vbox(
+          filler(), text(current_suggested_book.title) | center,
+          separatorLight(),
+          hbox(text("By: "), text(current_suggested_book.authors)) | center,
+          separatorEmpty(),
+          hbox(text(std::to_string(current_suggested_book.rating)),
+               text("/5 rating")) |
+              center,
+          hbox(text("Published: "), text(current_suggested_book.publisher)) |
+              center,
+          hbox(text("ISBN: "), text(current_suggested_book.isbn) | underlined) |
+              center,
+          hbox(text("Language: "), text(current_suggested_book.language)) |
+              center) |
+      center | borderStyled(DASHED) | size(HEIGHT, GREATER_THAN, 40) |
+      size(WIDTH, GREATER_THAN, 60);
 
   suggested_split = ResizableSplitLeft(
       Renderer([&] {
@@ -175,7 +206,7 @@ void Ui::buildBookmarksMenu() {
 }
 
 void Ui::buildSettingsMenu() {
-  settings_data_structures = {"Heap Tree", "B+ Tree"};
+  settings_data_structures = {"Heap Tree (Rating)", "B+ Tree (ISBN)"};
   settings_selected = 0;
   settings_ds_menu = Radiobox({
       .entries = &settings_data_structures,
@@ -184,17 +215,19 @@ void Ui::buildSettingsMenu() {
 }
 
 void Ui::buildAboutMenu() {
-  aboutElement = vbox({
-    text("Made with ♥ by:") | bold | center,
-    text("Dia Fallon (B+ Tree Implementation)") | center,
-    text("Cainan Medeiros (Heap Tree Implementation)") | center,
-    text("Nathan Padriga (User Interface)") | center,
-    separatorEmpty(),
-    text("Data Structures and Algorithms (COP3530) @ UF") | dim | center,
-    text("Fall 2024 w/ Prof. Amanpreet Kapoor") | dim | center,
-    separatorEmpty(),
-    text("Project 3 - Team 166") | bold | blink | center,
-  }) | center | borderHeavy;
+  aboutElement =
+      vbox({
+          text("Made with ♥ by:") | bold | center,
+          text("Dia Fallon (B+ Tree Implementation)") | center,
+          text("Cainan Medeiros (Heap Tree Implementation)") | center,
+          text("Nathan Padriga (User Interface)") | center,
+          separatorEmpty(),
+          text("Data Structures and Algorithms (COP3530) @ UF") | dim | center,
+          text("Fall 2024 w/ Prof. Amanpreet Kapoor") | dim | center,
+          separatorEmpty(),
+          text("Project 3 - Team 166") | bold | blink | center,
+      }) |
+      center | borderHeavy;
 }
 const Element Ui::renderBookDetails(const Book book) {
   return vbox({
