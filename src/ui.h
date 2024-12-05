@@ -63,6 +63,8 @@ private:
   int bookmarks_selected;
   Book current_suggested_book;
   std::vector<BooksFetcher::Book> saved_books;
+  size_t bp_index = 0;
+  std::vector<BooksFetcher::Book> bp_sorted;
   const std::vector<BooksFetcher::Book> &books;
 
   max_heap heap;

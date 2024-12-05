@@ -47,6 +47,7 @@ Ui::Ui(const vector<Book> &books, max_heap &heap, b_plus &bptree)
     : books(books), screen(ScreenInteractive::Fullscreen()), heap(heap),
       bptree(bptree) {
 
+  bp_sorted = bptree.collect();
   buildTabline();
   buildBrowseMenu();
   buildSuggestedMenu();
@@ -140,11 +141,18 @@ void Ui::buildBrowseMenu() {
 }
 
 void Ui::buildSuggestedMenu() {
+  bp_index = 30;
   suggested_buttons = Container::Vertical({
       Button(
           "Bookmark",
           [&] {
-            Book popped = heap.pop();
+            Book popped;
+            if (settings_selected == 0) {
+              popped = heap.pop();
+            } else {
+              popped = bp_sorted[bp_index];
+              bp_index += 1;
+            }
             saved_books.push_back(popped);
             buildCoreSuggestedMenu();
             saved_container->Add(BookLine(popped));
@@ -153,7 +161,11 @@ void Ui::buildSuggestedMenu() {
       Button(
           "Don't Bookmark",
           [&] {
-            heap.pop();
+            if (settings_selected == 0) {
+              heap.pop();
+            } else {
+              bp_index += 1;
+            }
             buildCoreSuggestedMenu();
           },
           ButtonOption::Simple()),
@@ -170,7 +182,7 @@ void Ui::buildCoreSuggestedMenu() {
     current_suggested_book = heap.top();
   } else {
     // use bptree to suggest
-    current_suggested_book = bptree.getSmallestBook(bptree.root);
+    current_suggested_book = bp_sorted[bp_index];
   }
   book_display =
       vbox(

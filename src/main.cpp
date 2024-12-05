@@ -25,8 +25,9 @@ int main(int argc, char** argv) {
   b_plus bptree = b_plus();
   bptree.order = 3;
   bptree.createTree(books);
+  auto v = bptree.collect();
 
-  //run ui
+  // //run ui
   Ui& ui = Ui::getInstance(books, heap, bptree);
   ui.loop();
 }
