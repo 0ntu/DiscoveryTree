@@ -1,4 +1,5 @@
 ------README------
+
 Stack Squad's DiscoveryTree
 
 About DiscoveryTree:
@@ -14,6 +15,7 @@ Standard C++ libraries -> algorithm, queue, iostream, vector, string, fstream, e
 
 
 ------How to Run the Program------
+
 Clone the Repository:
 https://github.com/0ntu/DiscoveryTree.git
 
@@ -36,6 +38,7 @@ dataset.
 
 
 ------Project Roles------
+
 Dia Fallon:
 Designed and implemented the B+ Tree. Authored the project report.
 
