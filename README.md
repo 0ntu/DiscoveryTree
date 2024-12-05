@@ -66,8 +66,15 @@ Usage
 -----
 
 Provide Input Data:
-The program accepts a CSV file containing book data. You can either use the provided file, or 
-create/find your own. If not using provided CSV file, ensure the file is formatted as 
+The program accepts a CSV file containing book data. 
+
+By default, the program searches the current working directory for the dataset titled `books.csv`
+You can override this behavior by invoking the program with
+```
+DiscoveryTree <path_to_dataset>
+```
+
+You can either use the provided file, or create/find your own. If not using provided CSV file, ensure the file is formatted as 
 follows...
 ID,Title,Authors,Average Rating,ISBN,ISBN13,Language Code,Number of Pages,Number of Ratings,Number of Reviews,Publication Date,Publisher
 
