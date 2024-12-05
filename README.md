@@ -9,6 +9,8 @@
                                        |___/                 
                                               By: Stack Squad
 ```
+<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="600px" /> <br>
+
 A fast and free book finder for the 90s!
 
 About DiscoveryTree:
