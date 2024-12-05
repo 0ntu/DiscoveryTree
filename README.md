@@ -13,7 +13,8 @@
 
 A fast and free book finder for the 90s!
 
-About DiscoveryTree:
+About
+------
 DiscoveryTree is a C++ application designed to efficiently organize and sort through large datasets 
 of book information. It helps users quickly locate books by using advanced data structures for 
 sorting by ISBN13 numbers and ratings.
@@ -24,18 +25,36 @@ Nix Package Manager
 Libraries -> FTXUI
 Standard C++ libraries -> algorithm, queue, iostream, vector, string, fstream, etc.
 
+Installation with Nix (Preferred)
+----------------------
+Zero-click Run
+`nix run github:0ntu/DiscoveryTree`
 
-------How to Run the Program------
+OR
+
+Build the derivation
+`git clone https://github.com/0ntu/DiscoveryTree.git`
+`cd DiscoveryTree`
+`nix build .`
+
+Installation (Manual)
+----------------------
 
 Clone the Repository:
-https://github.com/0ntu/DiscoveryTree.git
+`git clone https://github.com/0ntu/DiscoveryTree.git`
 
 Set Up Environment:
-You can install and use Nix if you haven’t already, and use it to set up the required 
-dependencies.
+Ensure you have `cmake`, `make`, and the `FTXUI` library
 
-Build the Program:
-Compile the application using the provided Makefile.
+Building:
+Ideally, you should be able to just type:
+```
+cmake .
+make
+```
+
+Usage
+-----
 
 Provide Input Data:
 The program accepts a CSV file containing book data. You can either use the provided file, or 
@@ -48,7 +67,8 @@ You can now interact with the UI. Use the provided menu options to sort and sear
 dataset.
 
 
-------Project Roles------
+Project Roles
+-------------
 
 Dia Fallon:
 Designed and implemented the B+ Tree. Authored the project report.
