@@ -28,20 +28,26 @@ Standard C++ libraries -> algorithm, queue, iostream, vector, string, fstream, e
 Installation with Nix (Preferred)
 ----------------------
 Zero-click Run
-`nix run github:0ntu/DiscoveryTree`
+```
+nix run github:0ntu/DiscoveryTree
+```
 
 OR
 
 Build the derivation
-`git clone https://github.com/0ntu/DiscoveryTree.git`
-`cd DiscoveryTree`
-`nix build .`
+```
+git clone https://github.com/0ntu/DiscoveryTree.git
+cd DiscoveryTree
+nix build .
+```
 
 Installation (Manual)
 ----------------------
 
 Clone the Repository:
-`git clone https://github.com/0ntu/DiscoveryTree.git`
+```
+git clone https://github.com/0ntu/DiscoveryTree.git
+```
 
 Set Up Environment:
 Ensure you have `cmake`, `make`, and the `FTXUI` library
