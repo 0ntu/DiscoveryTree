@@ -1,6 +1,15 @@
-------README------
-
+```
+  _____  _                                _______            
+ |  __ \(_)                              |__   __|           
+ | |  | |_ ___  ___ _____   _____ _ __ _   _| |_ __ ___  ___ 
+ | |  | | / __|/ __/ _ \ \ / / _ \ '__| | | | | '__/ _ \/ _ \
+ | |__| | \__ \ (_| (_) \ V /  __/ |  | |_| | | | |  __/  __/
+ |_____/|_|___/\___\___/ \_/ \___|_|   \__, |_|_|  \___|\___|
+                                        __/ |                
+                                       |___/                 
+```
 Stack Squad's DiscoveryTree
+A fast and free book finder for the 90s!
 
 About DiscoveryTree:
 DiscoveryTree is a C++ application designed to efficiently organize and sort through large datasets 
