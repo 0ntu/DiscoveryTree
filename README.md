@@ -76,7 +76,7 @@ DiscoveryTree <path_to_dataset>
 
 You can either use the provided file, or create/find your own. If not using provided CSV file, ensure the file is formatted as 
 follows...
-ID,Title,Authors,Average Rating,ISBN,ISBN13,Language Code,Number of Pages,Number of Ratings,Number of Reviews,Publication Date,Publisher
+`ID,Title,Authors,Average Rating,ISBN,ISBN13,Language Code,Number of Pages,Number of Ratings,Number of Reviews,Publication Date,Publisher`
 
 Run the Program:
 You can now interact with the UI. Use the provided menu options to sort and search through the 
