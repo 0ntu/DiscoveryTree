@@ -7,8 +7,8 @@
  |_____/|_|___/\___\___/ \_/ \___|_|   \__, |_|_|  \___|\___|
                                         __/ |                
                                        |___/                 
+                                              By: Stack Squad
 ```
-Stack Squad's DiscoveryTree
 A fast and free book finder for the 90s!
 
 About DiscoveryTree:
