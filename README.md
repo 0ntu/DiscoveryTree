@@ -25,6 +25,13 @@ Nix Package Manager
 Libraries -> FTXUI
 Standard C++ libraries -> algorithm, queue, iostream, vector, string, fstream, etc.
 
+Screenshots
+----------
+![Screenshot_2024-12-04_13-53-04](https://github.com/user-attachments/assets/ddabb5d6-b831-45cc-9e87-144c6da15ba1)
+![Screenshot_2024-12-04_13-53-26](https://github.com/user-attachments/assets/865c8198-bf5f-4447-af3b-fa18496155b2)
+![Screenshot_2024-12-04_13-53-48](https://github.com/user-attachments/assets/a6ac56fc-2c8b-4478-aeb5-f271e236cc92)
+
+
 Installation with Nix (Preferred)
 ----------------------
 Zero-click Run
