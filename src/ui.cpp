@@ -43,10 +43,13 @@ Ui &Ui::getInstance(const vector<Book> &books, max_heap &heap, b_plus &bptree) {
   return instance;
 }
 
+//Initialize member functions
+//Generate menu layout but dont display anything
 Ui::Ui(const vector<Book> &books, max_heap &heap, b_plus &bptree)
     : books(books), screen(ScreenInteractive::Fullscreen()), heap(heap),
       bptree(bptree) {
 
+  //Get sorted nodes from B+ tree
   bp_sorted = bptree.collect();
   buildTabline();
   buildBrowseMenu();
@@ -56,7 +59,9 @@ Ui::Ui(const vector<Book> &books, max_heap &heap, b_plus &bptree)
   buildAboutMenu();
 }
 
+//Renders the entire interface to a component, to be displayed by the main screen
 Component Ui::render() {
+  //handles input functionality
   auto container = Container::Vertical({
       Container::Horizontal(
           {Maybe(title_container, [&] { return tab_index == 0; }),
@@ -70,9 +75,14 @@ Component Ui::render() {
       Maybe(settings_ds_menu, [&] { return tab_index == 3; }),
       Container::Horizontal({tab_selection, exit_button}),
   });
+  
+  //render to component
   return Renderer(container, [&] { return buildInterface(); });
 }
 
+
+//Interface is made of a primary screen and a tabline
+//Render both and put them in a vertical box
 Element Ui::buildInterface() {
   return vbox({
       text("󱁉  DiscoveryTree 󱁉") | bold | hcenter,
@@ -88,21 +98,23 @@ Element Ui::renderTabline() {
   });
 }
 
+//primary display, render to element
 Element Ui::renderPrimary() {
-  if (tab_index == 0) {
+  if (tab_index == 0) { // browse
     return browse_split->Render() | border;
-  } else if (tab_index == 1) {
+  } else if (tab_index == 1) { // suggested
     return suggested_split->Render() | border;
-  } else if (tab_index == 2) {
+  } else if (tab_index == 2) { // bookmarks
     return bookmarks_split->Render() | border;
   } else if (tab_index == 3) {
+    //update suggested menu on match w/ settings
     buildCoreSuggestedMenu();
     return vbox(paragraph("Data structure to use for Suggested") | center,
                 settings_ds_menu->Render() | center) |
            borderStyled(ROUNDED) | center;
-  } else if (tab_index == 4) {
+  } else if (tab_index == 4) { // about
     return aboutElement;
-  } else {
+  } else { //not possible but just in case,
     return emptyElement();
   }
 }
@@ -140,6 +152,7 @@ void Ui::buildBrowseMenu() {
       &split_size_browse);
 }
 
+//build buttons & menu
 void Ui::buildSuggestedMenu() {
   bp_index = 30;
   suggested_buttons = Container::Vertical({
@@ -176,6 +189,8 @@ void Ui::buildSuggestedMenu() {
   buildCoreSuggestedMenu();
 }
 
+//reason this is separated is because this has to be updated w/o changing the split_size/bp_index
+//whenever the next book is suggested
 void Ui::buildCoreSuggestedMenu() {
   // use heap to suggest
   if (settings_selected == 0) {
@@ -184,6 +199,7 @@ void Ui::buildCoreSuggestedMenu() {
     // use bptree to suggest
     current_suggested_book = bp_sorted[bp_index];
   }
+  //suggested menu layout
   book_display =
       vbox(
           filler(), text(current_suggested_book.title) | center,
@@ -202,6 +218,7 @@ void Ui::buildCoreSuggestedMenu() {
       center | borderStyled(DASHED) | size(HEIGHT, GREATER_THAN, 40) |
       size(WIDTH, GREATER_THAN, 60);
 
+  //render menu & buttons together
   suggested_split = Renderer([&] {
     return vbox(book_display | center | flex,
                 suggested_buttons->Render() | center | flex);
@@ -209,7 +226,7 @@ void Ui::buildCoreSuggestedMenu() {
 }
 
 void Ui::buildBookmarksMenu() {
-
+  //bookmarks is essnetially the same as browse menu
   bookmarks_selected = 0;
   saved_container = Container::Vertical({}, &bookmarks_selected);
   split_size_bookmarks = 180;
@@ -228,6 +245,7 @@ void Ui::buildBookmarksMenu() {
       &split_size_browse);
 }
 
+//Select between heap tree & b+ tree w/ radiobox selector
 void Ui::buildSettingsMenu() {
   settings_data_structures = {"Heap Tree (Rating)", "B+ Tree (ISBN)"};
   settings_selected = 0;
@@ -237,6 +255,8 @@ void Ui::buildSettingsMenu() {
   });
 }
 
+//wall of text essentially
+//info about the project
 void Ui::buildAboutMenu() {
   aboutElement =
       vbox({
@@ -258,6 +278,8 @@ void Ui::buildAboutMenu() {
       }) |
       center | borderHeavy;
 }
+
+//Layout for bookdetails to be displayed
 const Element Ui::renderBookDetails(const Book book) {
   return vbox({
       text("Title") | bold,

@@ -10,8 +10,12 @@ using namespace ftxui;
 
 class Ui {
 public:
+  //UI is a singleton, creates one instance and returns the copy on subsequent calls
   static Ui &getInstance(const std::vector<BooksFetcher::Book> &books,
                          max_heap &heap, b_plus &bptree);
+  
+  //This function does not return,
+  //Start the UI and display to the console
   void loop();
 
 private:
@@ -25,6 +29,7 @@ private:
   Ui(Ui const &) = delete;
   void operator=(Ui const &) = delete;
 
+  //Build the interface as an element, to be rendered by render()
   Element buildInterface();
 
   // Render component to element
@@ -39,6 +44,9 @@ private:
   void buildCoreSuggestedMenu();
   void buildSettingsMenu();
   void buildAboutMenu();
+
+  //Used to display the book in the scrollable table
+  static const Element renderBookDetails(BooksFetcher::Book book);
 
   ScreenInteractive screen;
   int tab_index = 0;
@@ -70,5 +78,4 @@ private:
   max_heap heap;
   b_plus bptree;
 
-  static const Element renderBookDetails(BooksFetcher::Book book);
 };
