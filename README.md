@@ -19,11 +19,6 @@ DiscoveryTree is a C++ application designed to efficiently organize and sort thr
 of book information. It helps users quickly locate books by using advanced data structures for 
 sorting by ISBN13 numbers and ratings.
 
-Prerequisites (To run DiscoveryTree, ensure the following tools and dependencies are installed):
-C++ Compiler (e.g., GCC or Clang)
-Nix Package Manager
-Libraries -> FTXUI
-Standard C++ libraries -> algorithm, queue, iostream, vector, string, fstream, etc.
 
 Screenshots
 ----------
@@ -56,7 +51,8 @@ Clone the Repository:
 git clone https://github.com/0ntu/DiscoveryTree.git
 ```
 
-Set Up Environment:
+Prerequisites (To run DiscoveryTree, ensure the following tools and dependencies are installed):
+C++ Compiler (e.g., GCC or Clang)
 Ensure you have `cmake`, `make`, and the `FTXUI` library
 
 Building:
