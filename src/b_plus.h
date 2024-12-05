@@ -61,4 +61,7 @@ using namespace std;
 
         // Function to recursively traverse the tree by level order
         void recursiveLevelOrder(node* root_node, vector<vector<node*>>& traversal, int level_num);
+
+        // Function to collect all keys in sorted order
+        vector<Book> collect();
     };
